@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var engine = require('ejs-locals');//ejs layout 사용
 var session = require('express-session');//session
 var MySQLsession = require('express-mysql-session')(session);//session Store
 
@@ -23,7 +24,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.engine('ejs', engine);
 
+
+//router
 app.use('/', index);
 app.use('/users', users);
 
