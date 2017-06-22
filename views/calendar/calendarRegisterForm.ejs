@@ -1,0 +1,129 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Web App Project</title>
+
+    <!-- mobile settings -->
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+
+    <!-- WEB FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&amp;subset=latin,latin-ext,cyrillic,cyrillic-ext" rel="stylesheet" type="text/css" />
+
+    <!-- CORE CSS -->
+    <link href="/Admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- THEME CSS -->
+    <link href="/Admin/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+
+    <!--full calendar-->
+    <link href="/fullcalendar-3.1.0/fullcalendar.css" rel="stylesheet">
+
+    <!--full calendar js file-->
+    <script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+
+
+
+</head>
+
+<body>
+
+<div id="wrapper" class="clearfix">
+
+
+    <section id="middle">
+        <div id="content" class="dashboard padding-20">
+            <form method="post" action="/calendar/register" id="calendarRegisterForm" class="sky-form boxed" novalidate="novalidate">
+                <header><i class="fa fa-calendar-plus-o"></i> 일정 등록</header>
+
+                <fieldset>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <label>시작일</label>
+                                <input type="text" name="_start" class="form-control" readonly="readonly" value="<%=new Date(parseInt(start)).toISOString().split('T')[0]%>">
+                                <input type="hidden" name="start" id="start" value="<%=start%>">
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <label>종료일</label>
+                                <input type="text" name="_end" class="form-control" readonly="readonly" value="<%=new Date(parseInt(end-86400000)).toISOString().split('T')[0]%>">
+                                <input type="hidden" name="end" id="end" value="<%=end%>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>이벤트명</label>
+                                <input type="text" id="title" name="title" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>장소</label>
+                                <input type="text" id="place" name="place" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label>세부사항</label>
+                                <textarea name="description" id="description" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <fieldset>
+                    <div class="row">
+                        <div class="block inline-group">
+                            <label class="fsize11 block margin-top-20 margin-left-20">이벤트 타입</label>
+                            <label class="radio margin-left-20 _type"><input type="radio" name="type" value="default" checked="checked"><i></i><span class="text-primary">기본</span></label>
+                            <label class="radio margin-left-20 _type"><input type="radio" name="type" value="trip"><i></i><span class="text-warning">여행</span></label>
+                            <label class="radio margin-left-20 _type"><input type="radio" name="type" value="vacation"><i></i><span class="text-success">휴가</span></label>
+                            <label class="radio margin-left-20 _type"><input type="radio" name="type" value="important"><i></i><span class="text-danger">중요</span></label>
+                        </div>
+                        <div class="block inline-group">
+                            <label class="fsize11 block margin-top-20 margin-left-20">참석자</label>
+                            <div>
+                                <%for(var i=0;i<memberList.length;i++){%>
+                                <label class="checkbox margin-left-20 participant"><input type="checkbox" name="participant" value="<%=memberList[i].name%>"><i></i><span class="text"><%=memberList[i].name%></span></label>
+                                <%}%>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+
+                <footer>
+                    <button type="submit" class="btn btn-primary pull-left"><i class="fa fa-check"></i>일정 등록</button>
+                    <button type="button" class="btn btn-success pull-right" onclick="javascript:window.close();opener.location.reload()"><i class="fa fa-times"></i>닫기</button>
+                </footer>
+            </form>
+            <!-- /registration form -->
+        </div>
+    </section>
+    <!-- /MIDDLE -->
+
+</div>
+
+<input type="hidden" id="hid" value="<%=msg%>">
+
+
+<script>
+    var hid = document.getElementById('hid');
+    if(hid.value!=''){
+        alert(hid.value);
+    }
+</script>
+
+
+<!-- JAVASCRIPT FILES -->
+<script type="text/javascript">var plugin_path = '/Admin/assets/plugins/';</script>
+<!--<script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>-->
+<script type="text/javascript" src="/Admin/assets/js/app.js"></script>
+</body>
+</html>

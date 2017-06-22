@@ -1,0 +1,227 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Web App Project</title>
+
+    <!-- mobile settings -->
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+
+    <!-- WEB FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&amp;subset=latin,latin-ext,cyrillic,cyrillic-ext" rel="stylesheet" type="text/css" />
+
+    <!-- CORE CSS -->
+    <link href="/Admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- THEME CSS -->
+    <link href="/Admin/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+
+    <script src="/jquery/jquery-ui.min.js"></script>
+
+
+
+</head>
+
+<body>
+
+<div id="wrapper" class="clearfix">
+
+    <aside id="aside">
+
+        <nav id="sideNav"><!-- MAIN MENU -->
+            <ul class="nav nav-list">
+                <li class="active"><!-- dashboard -->
+                    <a class="dashboard" href="/login">
+                        <i class="main-icon fa fa-home"></i> <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/calendar">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-calendar"></i> <span>Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://ec2-52-79-148-200.ap-northeast-2.compute.amazonaws.com:3001/chat">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-commenting"></i> <span>Chat Room</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-krw"></i> <span>Money Book</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/about">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-info-circle"></i> <span>ABOUT</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <span id="asidebg"><!-- aside fixed background --></span>
+    </aside>
+    <!-- /ASIDE -->
+
+
+    <!-- HEADER -->
+    <header id="header">
+
+        <!-- Mobile Button -->
+        <button id="mobileMenuBtn"></button>
+
+        <!-- Logo -->
+        <span class="logo pull-left">
+					<a href="/login"><img src="/images/logo.png" alt="panel" height="35" /></a>
+				</span>
+
+
+        <nav>
+
+            <!-- OPTIONS LIST -->
+            <ul class="nav pull-right">
+
+                <!-- USER OPTIONS -->
+                <li class="dropdown pull-left">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                        <img class="user-avatar" alt="" src="/Admin/assets/images/noavatar.jpg" height="34" />
+                        <span class="user-name">
+									<span class="hidden-xs">
+										<%=id%> <i class="fa fa-angle-down"></i>
+									</span>
+								</span>
+                    </a>
+                    <ul class="dropdown-menu hold-on-click">
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="/member/getMemberById?id=<%=id%>"><i class="fa fa-cogs"></i> 마이페이지</a>
+                        </li>
+                        <li>
+                            <a href="/login/logout"><i class="fa fa-power-off"></i> 로그아웃</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- /USER OPTIONS -->
+
+            </ul>
+            <!-- /OPTIONS LIST -->
+
+        </nav>
+
+    </header>
+    <!-- /HEADER -->
+
+
+    <section id="middle">
+        <header id="page-header">
+            <h1>About</h1>
+            <ol class="breadcrumb">
+                <li>WEB APP PROGRAMMING</li>
+                <li class="active"><b>PROJECT</b></li>
+            </ol>
+        </header>
+        <!-- /page title -->
+
+
+        <div id="content" class="padding-20">
+
+            <div class="row">
+
+                <!-- LEFT -->
+                <div class="col-md-6">
+
+                    <!-- Default -->
+                    <div id="panel-misc-portlet-l1" class="panel panel-default">
+
+                        <div class="panel-heading">
+
+									<span class="elipsis"><!-- panel title -->
+										<strong>DEVELOPMENT Info</strong>
+									</span>
+
+                            <!-- right options -->
+                            <ul class="options pull-right list-inline">
+                                <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+                            </ul>
+                            <!-- /right options -->
+
+                        </div>
+
+                        <!-- panel content -->
+                        <div class="panel-body">
+
+                            <h4><b>Language</b> : node.js</h4>
+                            <h4><b>Database</b> : MySQL</h4>
+                            <h4><b>WAS</b>      : Amazon Web Service EC2</h4>
+                            <h4><b>IDE</b>      : WEB STORM</h4>
+                            <h4><b>Last Update</b>  : 2017-06-23</h4>
+
+                        </div>
+                        <!-- /panel content -->
+
+                    </div>
+                    <!-- /Default -->
+
+                </div>
+
+                <!-- RIGHT -->
+                <div class="col-md-6">
+
+                    <!-- Collapsible -->
+                    <div id="panel-misc-portlet-r1" class="panel panel-default">
+
+                        <div class="panel-heading">
+
+									<span class="elipsis"><!-- panel title -->
+										<strong>PROFILE / CONTACT</strong>
+									</span>
+
+                            <!-- right options -->
+                            <ul class="options pull-right list-inline">
+                                <li><a href="#" class="opt panel_colapse" data-toggle="tooltip" title="Colapse" data-placement="bottom"></a></li>
+                            </ul>
+                            <!-- /right options -->
+
+                        </div>
+
+                        <!-- panel content -->
+                        <div class="panel-body">
+
+                            <h4><b>Name</b> : NOH DAE YOUNG</h4>
+                            <h4><b>STUDENT ID</b> : 201120991</h4>
+                            <h4><b>EMAIL</b>      : ndy766@naver.com</h4>
+                            <h4><b>PHONE</b>      : 010-7279-4595</h4>
+                            <h4><b>CLASS</b>      : WEB APP PROGRAMMING</h4>
+
+                        </div>
+                        <!-- /panel content -->
+
+                    </div>
+                    <!-- /Collapsible -->
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    <!-- /MIDDLE -->
+
+</div>
+
+
+
+<!-- JAVASCRIPT FILES -->
+<script type="text/javascript">var plugin_path = '/Admin/assets/plugins/';</script>
+<script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="/Admin/assets/js/app.js"></script>
+</body>
+</html>

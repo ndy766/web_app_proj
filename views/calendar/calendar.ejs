@@ -1,0 +1,238 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Web App Project</title>
+
+    <!-- mobile settings -->
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+
+    <!-- WEB FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&amp;subset=latin,latin-ext,cyrillic,cyrillic-ext" rel="stylesheet" type="text/css" />
+
+    <!-- CORE CSS -->
+    <link href="/Admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- THEME CSS -->
+    <link href="/Admin/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+
+    <!--full calendar-->
+    <link href="/fullcalendar-3.1.0/fullcalendar.css" rel="stylesheet">
+
+    <!--full calendar js file-->
+    <script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+    <script src="/fullcalendar-3.1.0/lib/moment.min.js"></script>
+    <script src="/fullcalendar-3.1.0/fullcalendar.js"></script>
+    <script src="/fullcalendar-3.1.0/locale/ko.js"></script>
+
+
+
+    <!--calendar setting-->
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                header:{
+                    left:"month,basicWeek,basicDay",
+                    center:"title",
+                    right:"addSchedule   today prev,next"
+                },
+                editable : true,
+                eventLimit : true,
+                selectable: true,
+                selectHelper: true,
+                select: function(start, end, allDay) {
+                    var popUrl = "/calendar/registerForm?start="+start+"&end="+end;
+
+                    var popOption = "width=600, height=600, resizable=no, scrollbars=no, status=no;";
+
+                    window.open(popUrl,"",popOption);
+
+                },
+                events:{
+                    url:'/calendar/getAllEvent',
+                },
+                eventClick:function(calEvent, jsEvent, view){
+                    if(calEvent.className=='holiday') return;
+
+                    $(this).css('border', '2px dashed black');
+
+                    var popUrl = "/calendar/getEventByNo?no="+calEvent.no+"&start="+calEvent.start+"&end="+calEvent.end;
+                    var popOption = "width=600, height=600, resizable=no, scrollbars=no, status=no;";
+                    window.open(popUrl,"",popOption);
+                },
+                eventDragStart:function(event, jsEvent, ui, view){
+                    if(event.className[0]=='holiday') return;
+                },
+                eventDrop:function(event, delta, revertFunc){
+                    if(event.className[0]=='holiday') return;
+                    $.ajax({
+                        url:'/calendar/dropEvent?no='+event.no+'&start='+event.start+"&end="+event.end,
+                        type:'get',
+                        success:function(data){
+                            //location.reload();
+                        }
+                    });
+                },
+                eventResize:function(event, delta, revertFunc){
+                    $.ajax({
+                        url:'/calendar/dropEvent?no='+event.no+'&start='+event.start+"&end="+event.end,
+                        type:'get',
+                        success:function(data){
+
+                        }
+                    });
+                },
+                eventMouseover: function(calEvent, jsEvent) {
+                    if(calEvent.className=='holiday') return;
+
+                    var tooltip = '<div class="tooltipevent" style="width:200px;height:100px;background:yellow;position:absolute;z-index:10001;">' + calEvent.title + '</div>';
+                    $("body").append(tooltip);
+                    $(this).mouseover(function(e) {
+                        $(this).css('z-index', 10000);
+                        $('.tooltipevent').fadeIn('500');
+                        $('.tooltipevent').fadeTo('10', 1.9);
+                    }).mousemove(function(e) {
+                        $('.tooltipevent').css('top', e.pageY + 10);
+                        $('.tooltipevent').css('left', e.pageX + 20);
+                    });
+                },
+                eventMouseout: function(calEvent, jsEvent) {
+                    $(this).css('z-index', 8);
+                    $('.tooltipevent').remove();
+                },
+                viewRender: function(view){
+                    //캘린더의 높이를 크게해주기 위함
+                    $("#calendar").fullCalendar("option", "contentHeight", (view.name === "month" && view.width>500)? 10 : 700);
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .fc-sun {color:#e31b23} /* fullcalendar 일요일 */
+        .fc-sat {color:#007dc3} /* fullcalendar 토요일 */
+
+        .fc-day-number.fc-sat.fc-past { color:#0000FF; }
+        .fc-day-number.fc-sun.fc-past { color:#FF0000; }
+    </style>
+
+
+
+</head>
+
+<body>
+
+<div id="wrapper" class="clearfix">
+
+    <aside id="aside">
+
+        <nav id="sideNav"><!-- MAIN MENU -->
+            <ul class="nav nav-list">
+                <li class="active"><!-- dashboard -->
+                    <a class="dashboard" href="/login">
+                        <i class="main-icon fa fa-home"></i> <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/calendar">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-calendar"></i> <span>Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://ec2-52-79-148-200.ap-northeast-2.compute.amazonaws.com:3001/chat">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-commenting"></i> <span>Chat Room</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-krw"></i> <span>Money Book</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/about">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-info-circle"></i> <span>ABOUT</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <span id="asidebg"><!-- aside fixed background --></span>
+    </aside>
+    <!-- /ASIDE -->
+
+
+    <!-- HEADER -->
+    <header id="header">
+
+        <!-- Mobile Button -->
+        <button id="mobileMenuBtn"></button>
+
+        <!-- Logo -->
+        <span class="logo pull-left">
+					<a href="/login"><img src="/images/logo.png" alt="panel" height="35" /></a>
+				</span>
+
+
+        <nav>
+
+            <!-- OPTIONS LIST -->
+            <ul class="nav pull-right">
+
+                <!-- USER OPTIONS -->
+                <li class="dropdown pull-left">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                        <img class="user-avatar" alt="" src="/Admin/assets/images/noavatar.jpg" height="34" />
+                        <span class="user-name">
+									<span class="hidden-xs">
+										<%=id%> <i class="fa fa-angle-down"></i>
+									</span>
+								</span>
+                    </a>
+                    <ul class="dropdown-menu hold-on-click">
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="/member/getMemberById?id=<%=id%>"><i class="fa fa-cogs"></i> 마이페이지</a>
+                        </li>
+                        <li>
+                            <a href="/login/logout"><i class="fa fa-power-off"></i> 로그아웃</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- /USER OPTIONS -->
+
+            </ul>
+            <!-- /OPTIONS LIST -->
+
+        </nav>
+
+    </header>
+    <!-- /HEADER -->
+
+
+    <section id="middle">
+        <div id="content" class="dashboard padding-20">
+            <div class="row">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </section>
+    <!-- /MIDDLE -->
+
+</div>
+
+
+
+<!-- JAVASCRIPT FILES -->
+<script type="text/javascript">var plugin_path = '/Admin/assets/plugins/';</script>
+<script type="text/javascript" src="/Admin/assets/js/app.js"></script>
+</body>
+</html>

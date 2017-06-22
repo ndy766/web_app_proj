@@ -1,0 +1,316 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Web App Project</title>
+
+    <!-- mobile settings -->
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+
+    <!-- WEB FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&amp;subset=latin,latin-ext,cyrillic,cyrillic-ext" rel="stylesheet" type="text/css" />
+
+    <!-- CORE CSS -->
+    <link href="/Admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- THEME CSS -->
+    <link href="/Admin/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+    <style>
+        .col-centered{
+            float: none;
+            margin: 0 auto;
+        }
+    </style>
+
+    <script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+    <script src="/jquery/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#modifyBtn").click(function(){
+                if(!confirm('회원 정보를 수정하시겠습니까?')){
+                    return;
+                }
+
+                var id = $('#id').val();
+                var password = $('#password').val();
+                var password2 = $('#password2').val();
+                var name = $('#name').val();
+                var email = $('#email').val();
+                var phone = $('#phone').val();
+                var phone2 = $('#phone2').val();
+                var phone3 = $('#phone3').val();
+                phone = phone + '-' + phone2+ "-" + phone3;
+
+                var validate = true;
+                if(id.length < 6){
+                    validate = false;
+                    alert('아이디는 6글자 이상으로 설정하세요');
+                }
+                if(password.length < 6){
+                    validate = false;
+                    alert('비밀번호는 6글자 이상으로 설정하세요');
+                }
+                if(password!=password2){
+                    validate = false;
+                    alert('비밀번호와 비밀번호 확인이 일치하지 않습니다');
+                }
+                if(name.trim()==''){
+                    validate = false;
+                    alert('이름을 입력하세요');
+                }
+                if(email.trim()==''){
+                    validate = false;
+                    alert('이메일을 입력하세요');
+                }
+                if(phone.length<12){
+                    validate = false;
+                    alert('올바른 핸드폰 번호를 입력하세요')
+                }
+
+                //submit
+                if(validate){
+                    $('#memberModifyForm').submit();
+                }else{
+                    return false;
+                }
+
+
+
+            });
+
+        });
+
+        function deleteMember(){
+            if(!confirm('정말 회원탈퇴를 진행하시겠습니까?')) return;
+
+            var id = $("#id").val();
+            $.ajax('/member/deleteMember?id='+id).done(function(result){
+                location.href="/";
+            });
+
+        }
+    </script>
+
+</head>
+
+<body>
+
+<div id="wrapper" class="clearfix">
+
+    <aside id="aside">
+
+        <nav id="sideNav"><!-- MAIN MENU -->
+            <ul class="nav nav-list">
+                <li class="active"><!-- dashboard -->
+                    <a class="dashboard" href="/login">
+                        <i class="main-icon fa fa-home"></i> <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/calendar">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-calendar"></i> <span>Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://ec2-52-79-148-200.ap-northeast-2.compute.amazonaws.com:3001/chat">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-commenting"></i> <span>Chat Room</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-krw"></i> <span>Money Book</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/about">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-info-circle"></i> <span>ABOUT</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <span id="asidebg"><!-- aside fixed background --></span>
+    </aside>
+    <!-- /ASIDE -->
+
+
+    <!-- HEADER -->
+    <header id="header">
+
+        <!-- Mobile Button -->
+        <button id="mobileMenuBtn"></button>
+
+        <!-- Logo -->
+        <span class="logo pull-left">
+					<a href="/login"><img src="/images/logo.png" alt="panel" height="35" /></a>
+				</span>
+
+
+        <nav>
+
+            <!-- OPTIONS LIST -->
+            <ul class="nav pull-right">
+
+                <!-- USER OPTIONS -->
+                <li class="dropdown pull-left">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                        <img class="user-avatar" alt="" src="/Admin/assets/images/noavatar.jpg" height="34" />
+                        <span class="user-name">
+									<span class="hidden-xs">
+										<%=id%> <i class="fa fa-angle-down"></i>
+									</span>
+								</span>
+                    </a>
+                    <ul class="dropdown-menu hold-on-click">
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="/member/getMemberById?id=<%=id%>"><i class="fa fa-cogs"></i> 마이페이지</a>
+                        </li>
+                        <li>
+                            <a href="/login/logout"><i class="fa fa-power-off"></i> 로그아웃</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- /USER OPTIONS -->
+
+            </ul>
+            <!-- /OPTIONS LIST -->
+
+        </nav>
+
+    </header>
+    <!-- /HEADER -->
+
+
+    <section id="middle">
+        <div id="content" class="dashboard padding-20">
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <form id="memberModifyForm" method="post" action="/member/modify" class="sky-form boxed" novalidate="novalidate">
+                        <header><i class="fa fa-users"></i> 회원정보 관리</header>
+
+                        <fieldset>
+                            <label class="input">
+                                <i class="icon-append fa fa-user"></i>
+                                <input type="text" placeholder="아이디" name="id" id="id" value="<%=member.id%>" readonly="readonly">
+                                <b class="tooltip tooltip-bottom-right">변경할 아이디를 입력하세요</b>
+                            </label>
+
+                            <label class="input">
+                                <i class="icon-append fa fa-lock"></i>
+                                <input type="password" placeholder="비밀번호" name="password" id="password" value="<%=member.password%>">
+                                <b class="tooltip tooltip-bottom-right">변경할 비밀번호를 입력하세요</b>
+                            </label>
+
+                            <label class="input">
+                                <i class="icon-append fa fa-lock"></i>
+                                <input type="password" placeholder="비밀번호 확인" name="password2" id="password2" value="<%=member.password%>">
+                                <b class="tooltip tooltip-bottom-right">비밀번호를 다시 입력하세요</b>
+                            </label>
+                        </fieldset>
+
+                        <fieldset>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="input">
+                                        <i class="icon-append fa fa-eye"></i>
+                                        <input type="text" placeholder="이름" name="name" id="name" value="<%=member.name%>">
+                                        <b class="tooltip tooltip-bottom-right">변경할 이름을 입력하세요</b>
+                                    </label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="input">
+                                        <i class="icon-append fa fa-envelope"></i>
+                                        <input type="text" placeholder="이메일" name="email" id="email" value="<%=member.email%>">
+                                        <b class="tooltip tooltip-bottom-right">변경할 이메일주소를 입력하세요</b>
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="select">
+                                        <select name="phone" id="phone">
+                                            <%if(member.phone.split('-')[0]=='010'){%>
+                                            <option value="010" selected>010</option>
+                                            <option value="011">011</option>
+                                            <option value="017">017</option>
+                                            <option value="018">018</option>
+                                            <option value="019">019</option>
+                                            <%}else if(member.phone.split('-')[0]=='011'){%>
+                                            <option value="010">010</option>
+                                            <option value="011" selected>011</option>
+                                            <option value="017">017</option>
+                                            <option value="018">018</option>
+                                            <option value="019">019</option>
+                                            <%}else if(member.phone.split('-')[0]=='017'){%>
+                                            <option value="010">010</option>
+                                            <option value="011">011</option>
+                                            <option value="017" selected>017</option>
+                                            <option value="018">018</option>
+                                            <option value="019">019</option>
+                                            <%}else if(member.phone.split('-')[0]=='018'){%>
+                                            <option value="010">010</option>
+                                            <option value="011">011</option>
+                                            <option value="017">017</option>
+                                            <option value="018" selected>018</option>
+                                            <option value="019">019</option>
+                                            <%}else{%>
+                                            <option value="010">010</option>
+                                            <option value="011">011</option>
+                                            <option value="017">017</option>
+                                            <option value="018">018</option>
+                                            <option value="019" selected>019</option>
+                                            <%}%>
+                                        </select>
+                                        <i></i>
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="input">
+                                        <input type="text" placeholder="XXXX" name="phone2" id="phone2" value="<%=member.phone.split('-')[1]%>">
+                                        <b class="tooltip tooltip-bottom-right">핸드폰 번호를 입력하세요</b>
+                                    </label>
+                                </div>
+                                <div class="col col-md-4">
+                                    <label class="input">
+                                        <input type="text" placeholder="XXXX" name="phone3" id="phone3" value="<%=member.phone.split('-')[2]%>">
+                                        <b class="tooltip tooltip-bottom-right">핸드폰 번호를 입력하세요</b>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                        <footer>
+                            <button id="deleteBtn" type="button" class="btn btn-danger pull-right" onclick="deleteMember();"><i class="fa fa-check"></i>회원 탈퇴</button>
+                            <button id="modifyBtn" type="submit" class="btn btn-primary pull-right"><i class="fa fa-check"></i>회원 수정</button>
+                        </footer>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- /MIDDLE -->
+
+</div>
+
+
+
+<!-- JAVASCRIPT FILES -->
+<script type="text/javascript">var plugin_path = '/Admin/assets/plugins/';</script>
+<script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="/Admin/assets/js/app.js"></script>
+</body>
+</html>

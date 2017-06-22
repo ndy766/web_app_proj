@@ -1,0 +1,193 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Web App Project</title>
+
+    <!-- mobile settings -->
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+
+    <!-- WEB FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&amp;subset=latin,latin-ext,cyrillic,cyrillic-ext" rel="stylesheet" type="text/css" />
+
+    <!-- CORE CSS -->
+    <link href="/Admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!--date_picker-->
+    <link href="/jquery/jquery-ui.min.css" rel="stylesheet">
+    <link href="/jquery/jquery-ui.structure.min.css" rel="stylesheet">
+    <link href="/jquery/jquery-ui.theme.min.css" rel="stylesheet">
+
+    <!-- THEME CSS -->
+    <link href="/Admin/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+    <style>
+        .col-centered{
+            float: none;
+            margin: 0 auto;
+        }
+    </style>
+    <script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+    <script src="/jquery/jquery-ui.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+       $("#registerBtn").click(function(){
+           var id = $('#id').val();
+           var password = $('#password').val();
+           var password2 = $('#password2').val();
+           var name = $('#name').val();
+           var email = $('#email').val();
+           var phone = $('#phone').val();
+           var phone2 = $('#phone2').val();
+           var phone3 = $('#phone3').val();
+           phone = phone + '-' + phone2+ "-" + phone3;
+
+           var validate = true;
+           if(id.length < 6){
+               validate = false;
+               alert('아이디는 6글자 이상으로 설정하세요');
+           }
+           if(password.length < 6){
+               validate = false;
+               alert('비밀번호는 6글자 이상으로 설정하세요');
+           }
+           if(password!=password2){
+               validate = false;
+               alert('비밀번호와 비밀번호 확인이 일치하지 않습니다');
+           }
+           if(name.trim()==''){
+               validate = false;
+               alert('이름을 입력하세요');
+           }
+           if(email.trim()==''){
+               validate = false;
+               alert('이메일을 입력하세요');
+           }
+           if(phone.length<12){
+               validate = false;
+               alert('올바른 핸드폰 번호를 입력하세요')
+           }
+
+           //submit
+           if(validate){
+               $('#memberRegisterForm').submit();
+           }else{
+               return false;
+           }
+
+
+
+       });
+
+    });
+
+    </script>
+</head>
+
+<body>
+
+<div class="padding-15 container">
+    <div class="row">
+        <div class="padding-15">
+            <div class="login-box">
+
+        <!--
+        <div class="alert alert-danger">Complete all fields!</div>
+        -->
+
+        <!-- registration form -->
+        <form id="memberRegisterForm" method="post" action="/member/register" class="sky-form boxed" novalidate="novalidate">
+            <header><i class="fa fa-users"></i> 회원가입</header>
+
+            <fieldset>
+                <label class="input">
+                    <i class="icon-append fa fa-user"></i>
+                    <input type="text" placeholder="아이디" name="id" id="id">
+                    <b class="tooltip tooltip-bottom-right">사용할 아이디를 입력하세요</b>
+                </label>
+
+                <label class="input">
+                    <i class="icon-append fa fa-lock"></i>
+                    <input type="password" placeholder="비밀번호" name="password" id="password">
+                    <b class="tooltip tooltip-bottom-right">비밀번호를 입력하세요</b>
+                </label>
+
+                <label class="input">
+                    <i class="icon-append fa fa-lock"></i>
+                    <input type="password" placeholder="비밀번호 확인" name="password2" id="password2">
+                    <b class="tooltip tooltip-bottom-right">비밀번호를 다시 입력하세요</b>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="input">
+                            <i class="icon-append fa fa-eye"></i>
+                            <input type="text" placeholder="이름" name="name" id="name">
+                            <b class="tooltip tooltip-bottom-right">이름을 입력하세요</b>
+                        </label>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="input">
+                            <i class="icon-append fa fa-envelope"></i>
+                            <input type="text" placeholder="이메일" name="email" id="email">
+                            <b class="tooltip tooltip-bottom-right">이메일주소를 입력하세요</b>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="select">
+                            <select name="phone" id="phone">
+                                <option value="010" selected>010</option>
+                                <option value="011">011</option>
+                                <option value="017">017</option>
+                                <option value="018">018</option>
+                                <option value="019">019</option>
+                            </select>
+                            <i></i>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="input">
+                            <input type="text" placeholder="XXXX" name="phone2" id="phone2">
+                            <b class="tooltip tooltip-bottom-right">핸드폰 번호를 입력하세요</b>
+                        </label>
+                    </div>
+                    <div class="col col-md-4">
+                        <label class="input">
+                            <input type="text" placeholder="XXXX" name="phone3" id="phone3">
+                            <b class="tooltip tooltip-bottom-right">핸드폰 번호를 입력하세요</b>
+                        </label>
+                    </div>
+                </div>
+
+            </fieldset>
+
+            <footer>
+                <button id="registerBtn" type="submit" class="btn btn-primary pull-right"><i class="fa fa-check"></i>회원 등록</button>
+            </footer>
+
+        </form>
+        <!-- /registration form -->
+
+        <hr />
+
+
+
+
+    </div>
+
+</div>
+        </div>
+    </div>
+
+
+
+<!-- JAVASCRIPT FILES -->
+<script type="text/javascript">var plugin_path = '/Admin/assets/plugins/';</script>
+<script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="/Admin/assets/js/app.js"></script>
+</body>
+</html>

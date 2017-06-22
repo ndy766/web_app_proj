@@ -1,0 +1,201 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Web App Project</title>
+
+    <!-- mobile settings -->
+    <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+
+    <!-- WEB FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&amp;subset=latin,latin-ext,cyrillic,cyrillic-ext" rel="stylesheet" type="text/css" />
+
+    <!-- CORE CSS -->
+    <link href="/Admin/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- THEME CSS -->
+    <link href="/Admin/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="/Admin/assets/css/color_scheme/green.css" rel="stylesheet" type="text/css" id="color_scheme" />
+    <style>
+        p{
+            color: darkblue;
+            font-weight: bold;
+        }
+        div#chatview{
+            background-color: aquamarine;
+        }
+    </style>
+
+    <script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+    <script src="/jquery/jquery-ui.min.js"></script>
+
+
+
+</head>
+
+<body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://localhost:3001');
+    socket.on('connect', function(){
+        socket.emit('adduser', prompt("What's your name?"));
+    });
+    socket.on('updatechat', function (username, data) {
+        $('#conversation').append('<b>'+username + ':</b> ' + data + '<br>');
+    });
+    socket.on('updateusers', function(data) {
+        $('#users').empty();
+        $.each(data, function(key, value) {
+            $('#users').append('<div>' + key + '</div>');
+        });
+    });
+    $(function(){
+        $('#datasend').click( function() {
+            var message = $('#data').val();
+            $('#data').val('');
+            $('#data').focus();
+            socket.emit('sendchat', message);
+        });
+        $('#data').keypress(function(e) {
+            if(e.which == 13) {
+                $(this).blur();
+                $('#datasend').focus().click();
+            }
+        });
+    });
+</script>
+
+
+<div id="wrapper" class="clearfix">
+
+    <aside id="aside">
+
+        <nav id="sideNav"><!-- MAIN MENU -->
+            <ul class="nav nav-list">
+                <li class="active"><!-- dashboard -->
+                    <a class="dashboard" href="/login">
+                        <i class="main-icon fa fa-home"></i> <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/calendar">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-calendar"></i> <span>Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://ec2-52-79-148-200.ap-northeast-2.compute.amazonaws.com:3001/chat">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-commenting"></i> <span>Chat Room</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-krw"></i> <span>Money Book</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/about">
+                        <!--<i class="fa fa-menu-arrow pull-right"></i>-->
+                        <i class="main-icon fa fa-info-circle"></i> <span>ABOUT</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <span id="asidebg"><!-- aside fixed background --></span>
+    </aside>
+    <!-- /ASIDE -->
+
+
+    <!-- HEADER -->
+    <header id="header">
+
+        <!-- Mobile Button -->
+        <button id="mobileMenuBtn"></button>
+
+        <!-- Logo -->
+        <span class="logo pull-left">
+					<a href="/login"><img src="/images/logo.png" alt="panel" height="35" /></a>
+				</span>
+
+
+        <nav>
+
+            <!-- OPTIONS LIST -->
+            <ul class="nav pull-right">
+
+                <!-- USER OPTIONS -->
+                <li class="dropdown pull-left">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                        <img class="user-avatar" alt="" src="/Admin/assets/images/noavatar.jpg" height="34" />
+                        <span class="user-name">
+									<span class="hidden-xs">
+										<%=id%> <i class="fa fa-angle-down"></i>
+									</span>
+								</span>
+                    </a>
+                    <ul class="dropdown-menu hold-on-click">
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="/member/getMemberById?id=<%=id%>"><i class="fa fa-cogs"></i> 마이페이지</a>
+                        </li>
+                        <li>
+                            <a href="/login/logout"><i class="fa fa-power-off"></i> 로그아웃</a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- /USER OPTIONS -->
+
+            </ul>
+            <!-- /OPTIONS LIST -->
+
+        </nav>
+
+    </header>
+    <!-- /HEADER -->
+
+
+    <section id="middle">
+        <header id="page-header">
+            <h1>CHAT SERVICE</h1>
+            <ol class="breadcrumb">
+                <li class="active"><b>Welcome to Chat Room</b></li>
+            </ol>
+        </header>
+
+        <div id="content" class="dashboard padding-20">
+            <div class="row">
+                <div class="col-md-12">
+                    <div style="float:left;width:200px;border-right:2px solid black;height:500px;padding:10px;overflow:scroll-y;">
+                        <font style="color:blue;size:5"><b>USER LIST</b></font>
+                        <div id="users"></div>
+                    </div>
+                    <div style="float:left;width:500px;height:500px;overflow:scroll-y;padding:10px;">
+                        <font style="color:blue;size:5"><b>Conversation</b></font>
+                        <div id="conversation"></div>
+                        <input id="data" style="width:200px;" />
+                        <input type="button" id="datasend" value="send" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- /MIDDLE -->
+
+</div>
+
+
+
+<!-- JAVASCRIPT FILES -->
+<script type="text/javascript">var plugin_path = '/Admin/assets/plugins/';</script>
+<script type="text/javascript" src="/Admin/assets/plugins/jquery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="/Admin/assets/js/app.js"></script>
+</body>
+</html>
